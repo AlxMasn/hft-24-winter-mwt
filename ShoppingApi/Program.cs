@@ -1,20 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using ShoppingApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000") // URL des React-Frontends
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+
+builder.Services.AddDbContext<ShoppingContext>(opt => opt.UseInMemoryDatabase("ShoppingList"));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -22,7 +21,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowReactApp"); // CORS-Middleware aktivieren
 app.UseAuthorization();
 app.MapControllers();
 
