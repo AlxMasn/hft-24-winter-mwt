@@ -7,3 +7,4 @@ namespace ShoppingApi.Models
         public int Amount { get; set; } // Item Amount
     }
 }
+

@@ -10,3 +10,4 @@ namespace ShoppingApi.Data
         public DbSet<ShoppingItem> ShoppingItems { get; set; }
     }
 }
+
