@@ -9,12 +9,12 @@ const AddShoppingItem = ({ onItemAdded }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5199/api/ShoppingItems", {
+      const response = await axios.post("https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/", {
         name,
         amount: parseInt(amount, 10),
       });
 
-      onItemAdded(response.data); // Callback, um das neue Item in der Liste anzuzeigen
+      onItemAdded(response.data);
       setName("");
       setAmount("");
     } catch (error) {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoppingApi.Data;
 using ShoppingApi.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingApi.Controllers
@@ -10,17 +11,29 @@ namespace ShoppingApi.Controllers
     public class ShoppingItemsController : ControllerBase
     {
         private readonly ShoppingContext _context;
+        private readonly ILogger<ShoppingItemsController> _logger; // Logger
 
-        public ShoppingItemsController(ShoppingContext context)
+        public ShoppingItemsController(ShoppingContext context, ILogger<ShoppingItemsController> logger) // Logger im Konstruktor
         {
             _context = context;
+            _logger = logger;
         }
 
-        // GET: api/ShoppingItems
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ShoppingItem>>> GetShoppingItems()
         {
-            return await _context.ShoppingItems.ToListAsync();
+            _logger.LogInformation("GetShoppingItems aufgerufen"); // Wichtiger Log
+            try
+            {
+                var items = await _context.ShoppingItems.ToListAsync();
+                _logger.LogInformation($"Anzahl der Items: {items.Count}"); // Anzahl loggen
+                return items;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Fehler beim Abrufen der Items"); // Fehler loggen
+                return StatusCode(500, "Interner Serverfehler");
+            }
         }
 
         // GET: api/ShoppingItems/5

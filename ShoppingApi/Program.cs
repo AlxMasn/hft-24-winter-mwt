@@ -20,13 +20,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // Ersetzen Sie dies durch die tatsächliche URL Ihrer Frontend-Anwendung
+            policy.AllowAnyOrigin() // Replace with your frontend URL
                   .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
+                  .AllowAnyMethod();
         });
 });
-
 
 var app = builder.Build();
 
@@ -35,11 +33,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    // Enable HTTPS redirection
+    app.UseHttpsRedirection(); // Uncomment to enforce HTTPS
 }
+
 app.UseCors("AllowFrontend");
-app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
+
 
 using (var scope = app.Services.CreateScope())
 {
