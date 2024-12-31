@@ -9,7 +9,8 @@ builder.Services.AddControllers();
 // Add PostgreSQL Database context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ShoppingContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString)
+    .LogTo(Console.WriteLine, LogLevel.Information));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

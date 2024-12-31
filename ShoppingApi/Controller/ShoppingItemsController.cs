@@ -51,14 +51,27 @@ namespace ShoppingApi.Controllers
         }
 
         // POST: api/ShoppingItems
-        [HttpPost]
-        public async Task<ActionResult<ShoppingItem>> PostShoppingItem(ShoppingItem item)
-        {
-            _context.ShoppingItems.Add(item);
-            await _context.SaveChangesAsync();
+ [HttpPost]
+public async Task<ActionResult<ShoppingItem>> PostShoppingItem(ShoppingItem item)
+{
+    try
+    {
+        _logger.LogInformation($"Empfangene Daten: Name={item.Name}, Amount={item.Amount}");
 
-            return CreatedAtAction(nameof(GetShoppingItem), new { id = item.Id }, item);
-        }
+        // Erzwinge, dass die Datenbank die Id generiert
+        item.Id = 0;
+
+        _context.ShoppingItems.Add(item);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetShoppingItem), new { id = item.Id }, item);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Fehler beim Hinzufügen eines Items");
+        return StatusCode(500, "Interner Serverfehler");
+    }
+}
 
         // PUT: api/ShoppingItems/5
         [HttpPut("{id}")]
