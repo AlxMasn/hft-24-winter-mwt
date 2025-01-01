@@ -4,21 +4,26 @@ import axios from "axios";
 const AddShoppingItem = ({ onItemAdded }) => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false); // Neu
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return; // Doppelte Klicks verhindern
 
+    setIsSubmitting(true); // Schützt vor mehrfachen Anfragen
     try {
-      const response = await axios.post("https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/", {
-        name,
-        amount: parseInt(amount, 10),
-      });
+      const response = await axios.post(
+        "https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/",
+        { name, amount: parseInt(amount, 10) }
+      );
 
       onItemAdded(response.data);
       setName("");
       setAmount("");
     } catch (error) {
       console.error("Fehler beim Hinzufügen des Items:", error);
+    } finally {
+      setIsSubmitting(false); // Button nach Abschluss wieder aktivieren
     }
   };
 
@@ -43,7 +48,9 @@ const AddShoppingItem = ({ onItemAdded }) => {
           required
         />
       </div>
-      <button type="submit">Hinzufügen</button>
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Hinzufügen..." : "Hinzufügen"} {/* Button Zustand anzeigen */}
+      </button>
     </form>
   );
 };

@@ -56,7 +56,7 @@ public async Task<ActionResult<ShoppingItem>> PostShoppingItem(ShoppingItem item
 {
     try
     {
-        _logger.LogInformation($"Empfangene Daten: Name={item.Name}, Amount={item.Amount}");
+        _logger.LogInformation($"Request ID: {HttpContext.TraceIdentifier}, Empfangene Daten: Name={item.Name}, Amount={item.Amount}");
 
         // Erzwinge, dass die Datenbank die Id generiert
         item.Id = 0;
@@ -72,6 +72,7 @@ public async Task<ActionResult<ShoppingItem>> PostShoppingItem(ShoppingItem item
         return StatusCode(500, "Interner Serverfehler");
     }
 }
+
 
         // PUT: api/ShoppingItems/5
         [HttpPut("{id}")]

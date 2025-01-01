@@ -26,9 +26,11 @@ function App() {
 
     const handleItemAdded = async (newItem) => {
         try {
-            const response = await axios.post("https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/", newItem);
-            setItems(prevItems => [...prevItems, response.data]); // Füge die vollständige Antwort hinzu
-            fetchItems(); // Lade die Daten neu, um sicherzustellen, dass alles synchron ist
+            const response = await axios.post(
+                "https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/",
+                newItem
+            );
+            setItems((prevItems) => [...prevItems, response.data]); // Nur lokales State-Update
         } catch (error) {
             console.error("Fehler beim Hinzufügen des Items:", error);
         }
