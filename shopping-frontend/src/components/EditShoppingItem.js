@@ -9,7 +9,7 @@ const EditShoppingItem = ({ item, onItemUpdated, onCancel }) => {
         e.preventDefault();
         try {
             const updatedItem = { ...item, name, amount: parseInt(amount, 10) };
-            await axios.put(`https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/${item.id}`, updatedItem);
+            await axios.put(`http://localhost:5199/api/ShoppingItems/${item.id}`, updatedItem);
             onItemUpdated(updatedItem);
             onCancel();
         } catch (error) {

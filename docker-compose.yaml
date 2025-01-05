@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: ./ShoppingApi
+    ports:
+      - "5199:5199"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=mydatabase;Username=myuser;Password=mypassword
+    depends_on:
+      - db
+    command: [ "dotnet", "run", "--urls", "http://localhost:5199" ]
+
+  frontend:
+    build:
+      context: ./shopping-frontend
+      dockerfile: dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      REACT_APP_BACKEND_URL: http://localhost:5199
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

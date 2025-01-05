@@ -11,7 +11,7 @@ function App() {
     const fetchItems = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await axios.get("https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems");
+            const response = await axios.get("http://localhost:5199/api/ShoppingItems");
             setItems(response.data);
         } catch (error) {
             setError("Fehler beim Laden der Daten!");
@@ -27,7 +27,7 @@ function App() {
     const handleItemAdded = async (newItem) => {
         try {
             const response = await axios.post(
-                "https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/",
+                "http://localhost:5199/api/ShoppingItems/",
                 newItem
             );
             setItems((prevItems) => [...prevItems, response.data]); // Nur lokales State-Update
@@ -38,7 +38,7 @@ function App() {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/${id}`);
+            await axios.delete(`http://localhost:5199/api/ShoppingItems/${id}`);
             setItems(prevItems => prevItems.filter(item => item.id !== id));
         } catch (error) {
             console.error("Fehler beim Löschen des Items:", error);
@@ -47,7 +47,7 @@ function App() {
 
     const handleItemUpdated = async (updatedItem) => {
         try {
-            await axios.put(`https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/${updatedItem.id}`, updatedItem);
+            await axios.put(`http://localhost:5199/api/ShoppingItems/${updatedItem.id}`, updatedItem);
             setItems(prevItems => prevItems.map(item => item.id === updatedItem.id ? updatedItem : item));
         } catch (error) {
             console.error("Fehler beim Aktualisieren des Items:", error);

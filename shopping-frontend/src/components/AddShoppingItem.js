@@ -13,7 +13,7 @@ const AddShoppingItem = ({ onItemAdded }) => {
     setIsSubmitting(true); // Schützt vor mehrfachen Anfragen
     try {
       const response = await axios.post(
-        "https://fuzzy-potato-wrggvj79x697h96pv-5199.app.github.dev/api/ShoppingItems/",
+        "http://localhost:5199/api/ShoppingItems/",
         { name, amount: parseInt(amount, 10) }
       );
 
